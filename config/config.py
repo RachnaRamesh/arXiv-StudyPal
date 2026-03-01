@@ -3,6 +3,9 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 
+# Fix for Protobuf Descriptor Error
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
 load_dotenv()
 # Also try loading from src/.env if root .env doesn't exist or doesn't have the key
 if not os.getenv("GROQ_API_KEY"):

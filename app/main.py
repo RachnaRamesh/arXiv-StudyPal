@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 import uuid
 import streamlit as st
+import random
 
 # Setup project root
 root = Path(__file__).resolve().parents[1]
@@ -109,10 +110,6 @@ def main():
             st.rerun()
 
         with st.expander("🛠️ Advanced", expanded=False):
-            if st.button("🚀 Run Ingestion", use_container_width=True):
-                with st.spinner("Ingesting arXiv data..."):
-                    ingest()
-                st.success("Ingestion complete!")
             st.session_state.show_debug = st.checkbox("Show Retrieved Chunks", st.session_state.show_debug)
 
     # --- Main Chat UI ---
@@ -192,32 +189,50 @@ def main():
         main_paper = current_chat['selected_papers'][0]
         num_messages = len(current_chat["messages"])
         
+        # Use a seed based on chat_id and message count to keep suggestions 
+        # stable for the current turn but different across turns
+        random.seed(f"{st.session_state.current_chat_id}_{num_messages}")
+        
         if num_messages == 0:
-            queries = [
+            pool = [
                 f"Summarize the core method in '{main_paper[:30]}...'",
                 "What are the main experimental results?",
                 "What problem does this paper solve?",
-                "What are the key contributions?"
+                "What are the key contributions?",
+                "What is the significance of the title?",
+                "Who are the target audiences for this research?"
             ]
             if len(current_chat["selected_papers"]) > 1:
-                queries[0] = "What is the common theme between these papers?"
-                queries[1] = "Compare the key contributions of the selected papers."
+                pool.append("What is the common theme between these papers?")
+                pool.append("Compare the key contributions of the selected papers.")
+                pool.append("How do these papers build upon each other?")
         elif num_messages < 4:
-            queries = [
+            pool = [
                 "Explain the limitations discussed.",
                 "How does this work compare to state-of-the-art?",
                 "What are the potential future research directions?",
-                "Are there any specific datasets or benchmarks mentioned?"
+                "Are there any specific datasets or benchmarks mentioned?",
+                "What were the main evaluation metrics used?",
+                "Explain the ablation studies if any.",
+                "What are the core assumptions made by the authors?",
+                "Describe the hardware or compute resources used."
             ]
         else:
-            queries = [
+            pool = [
                 "Can you explain the mathematical foundation?",
                 "What are the practical implications of this research?",
                 "Summarize the final conclusions.",
-                "Give me a 3-sentence elevator pitch for this work."
+                "Give me a 3-sentence elevator pitch for this work.",
+                "How can this be applied in industry?",
+                "What are the ethical considerations mentioned?",
+                "If I were to replicate this, where should I start?",
+                "What is the most surprising finding in this paper?"
             ]
 
-        for i, ex in enumerate(queries):
+        # Randomly select 4 questions from the pool
+        selected_queries = random.sample(pool, min(4, len(pool)))
+
+        for i, ex in enumerate(selected_queries):
             if q_cols[i % 2].button(ex, use_container_width=True, key=f"suggested_{i}_{st.session_state.current_chat_id}_{num_messages}"):
                 st.session_state.pending_query = ex
                 st.rerun()

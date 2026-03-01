@@ -1,11 +1,6 @@
 [theme]
-primaryColor = "#FF4B4B"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F0F2F6"
-textColor = "#262730"
-font = "sans serif"
-
-[server]
-headless = true
-enableCORS = false
-enableXsrfProtection = false
+primaryColor="#F06292"
+backgroundColor="#FFF0F3"
+secondaryBackgroundColor="#FFE3EA"
+textColor="#303030"
+font="sans serif"
