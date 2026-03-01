@@ -2,8 +2,6 @@
 
 A production-grade Retrieval-Augmented Generation (RAG) chatbot built on the arXiv dataset. Users can ask questions about AI research papers and receive grounded answers with citations.
 
-![Architecture](architecture.png) <!-- placeholder for diagram -->
-
 ## 🌟 Features
 
 - **Knowledge base from arXiv metadata** filtered by AI-relevant categories
@@ -89,15 +87,6 @@ streamlit run app/main.py
 - "Do any papers provide code on GitHub?"
 - "Give me a literature summary on graph neural networks."
 
-## 📈 Evaluation Metrics
-
-The UI displays retrieval/generation latency and approximate token context size. Use the debug toggle to inspect sources and similarity scores.
-
-## 🧪 Running Tests
-
-```bash
-pytest tests/
-```
 
 ## 🔮 Future Improvements
 
@@ -109,6 +98,3 @@ pytest tests/
 - Export answers to Markdown or PDF
 - Authentication and user profiles for saved sessions
 
----
-
-Created as a resume-quality GenAI project demonstrating clean architecture, modularity, and real-world tooling.
