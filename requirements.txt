@@ -15,4 +15,4 @@ httpx
 chromadb
 requests
 grpcio
-protobuf==3.19.0
+protobuf==3.20.3
