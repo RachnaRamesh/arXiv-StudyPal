@@ -1,3 +1,7 @@
+import os
+# Fix for Protobuf Descriptor Error - Must be set before any other imports
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
 import sys
 from pathlib import Path
 import uuid
